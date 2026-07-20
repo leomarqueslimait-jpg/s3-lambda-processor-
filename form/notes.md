@@ -1,0 +1,10 @@
+`student_id`,
+`first_name`,
+`last_name`,
+`dob`,
+`grade_level`,
+`guardian_name`,
+`guardian_email`,
+`guardian_phone`,
+`enrollment_date`,
+`school_site`
