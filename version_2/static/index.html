@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Student Enrollment Form</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 480px; margin: 3rem auto; padding: 0 1rem; }
+  label { display: block; margin-top: 0.75rem; font-weight: 600; }
+  input { width: 100%; padding: 0.4rem; margin-top: 0.25rem; box-sizing: border-box; }
+  button { margin-top: 1.5rem; padding: 0.5rem 1.25rem; }
+  #status { margin-top: 1rem; font-weight: 600; }
+  #status.success { color: green; }
+  #status.error { color: crimson; }
+</style>
+</head>
+<body>
+<h1>Student Enrollment Form</h1>
+
+<!-- Fill this in with the api_invoke_url Terraform output after `terraform apply`. -->
+<script>const API_URL = "REPLACE_WITH_API_INVOKE_URL";</script>
+
+<form id="student-form">
+  <label>First name<input name="first_name" required></label>
+  <label>Last name<input name="last_name" required></label>
+  <label>Date of birth (MM/DD/YYYY)<input name="dob" placeholder="MM/DD/YYYY" required></label>
+  <label>Guardian name<input name="guardian_name" required></label>
+  <label>Guardian email<input name="guardian_email" type="email" required></label>
+  <label>Guardian phone (XXX-XXX-XXXX)<input name="guardian_phone" placeholder="XXX-XXX-XXXX" required></label>
+  <label>Enrollment date (MM/DD/YYYY)<input name="enrollment_date" placeholder="MM/DD/YYYY" required></label>
+  <label>School site<input name="school_site" required></label>
+  <button type="submit">Submit</button>
+</form>
+
+<p id="status"></p>
+
+<script>
+const form = document.getElementById("student-form");
+const status = document.getElementById("status");
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  status.textContent = "";
+  status.className = "";
+
+  const fields = Object.fromEntries(new FormData(form).entries());
+
+  try {
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(fields),
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      status.textContent = data.message;
+      status.className = "success";
+      form.reset();
+    } else {
+      status.textContent = data.error || "Submission failed, please try again.";
+      status.className = "error";
+    }
+  } catch (err) {
+    status.textContent = "Network error, please try again.";
+    status.className = "error";
+  }
+});
+</script>
+</body>
+</html>

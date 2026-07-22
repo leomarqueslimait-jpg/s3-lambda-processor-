@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../terraform-aws-portfolio-site/terraform-aws-portfolio-site-main"
+		}
+	],
+	"settings": {
+		"claudeCodeChat.permissions.yoloMode": false
+	}
+}
